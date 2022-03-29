@@ -69,6 +69,17 @@ h1 {
   cursor: pointer;
 }
 
+.errorMsg {
+  color: red;
+  margin: 0;
+  align-self: flex-start;
+}
+
 .submitButton:hover {
   background-color: #1b598f;
+}
+
+.msgOk {
+  color: green;
+  margin-top: 15px;
 }

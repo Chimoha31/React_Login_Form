@@ -5,6 +5,7 @@ function App() {
   const initialValues = { username: "", mailAddress: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+  const [isBtnClick, setIsBtnClick] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,6 +17,7 @@ function App() {
     e.preventDefault();
     // ログイン情報を送信する前に、バリデーションチェックをする。
     setFormErrors(validate(formValues));
+    setIsBtnClick(true)
   };
 
   const validate = (values) => {
@@ -26,14 +28,17 @@ function App() {
     }
     if(!values.mailAddress){
       errors.mailAddress = "Add mail address";
-    }else if(!values.mailAddress.includes(regex)){
+    }else if(!regex.test(values.mailAddress)){
       errors.mailAddress = "Type correct email address"
     }
-    if(values.password.length < 4 || values.password.length > 16 || !values.password){
+    if(!values.password) {
+      errors.password = "Add password";
+    }else if(values.password.length < 4 || values.password.length > 16){
       errors.password = "Add passwords more than 4 and less than 15 letters";
     }
     return errors;
   };
+
 
   return (
     <div className="formContainer">
@@ -50,7 +55,7 @@ function App() {
               onChange={handleChange}
             ></input>
           </div>
-          <p>{formErrors.username}</p>
+          <p className="errorMsg">{formErrors.username}</p>
           <div className="formField">
             <label>E-mail</label>
             <input
@@ -60,7 +65,7 @@ function App() {
               onChange={handleChange}
             ></input>
           </div>
-          <p>{formErrors.mailAddress}</p>
+          <p className="errorMsg">{formErrors.mailAddress}</p>
           <div className="formField">
             <label>Password</label>
             <input
@@ -70,8 +75,11 @@ function App() {
               onChange={handleChange}
             ></input>
           </div>
-          <p>{formErrors.password}</p>
+          <p className="errorMsg">{formErrors.password}</p>
           <button className="submitButton">Login</button>
+          {Object.keys(formErrors).length === 0 && isBtnClick && (
+            <div className="msgOk">Succeed to Login</div>
+          )}
         </div>
       </form>
     </div>
